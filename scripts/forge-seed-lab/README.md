@@ -4,7 +4,9 @@ Adds a calculator at `#/calculators/forge-predictor` and a standalone page at `f
 
 The supported method needs bonus-bearing items. Best results use several consecutive items with two substats, all displayed decimals, one forge level and complete roll order. Mostly bonus-free level-based recovery is experimental .
 
-The predictor has its own explicit data version and forge ascension selectors. It includes the 16 November 2026 configuration and legacy 2.11.1 data. It does not read the active profile, contact the game, request credentials or perform real forges. A unique match is unique under the bundled model, not a measured probability of accuracy. Check a fresh in-game holdout roll. Latest ascension rules are implemented from the Helper data and model; fresh in-game ascended captures are still needed for independent validation.
+The calculator reads its game tables from the same `public/parsed_configs` files as the rest of the app, for the game data version selected in the app (`src/components/ForgePredictor/buildModel.ts`), and sends them to the worker with each request. Forge level, ascension, hammers and tech tree bonuses come from the active profile, and a recovered seed is saved to it. It does not contact the game, request credentials or perform real forges. A unique match is unique under the model, not a measured probability of accuracy. Check a fresh in-game holdout roll; fresh in-game ascended captures are still needed for independent validation.
+
+`model-data.json` is only the embedded copy used by the standalone page and the worker tests. `npm run update:forge-seed-lab-data` regenerates it from `public/parsed_configs`, and `test-app-model.mts` fails when it drifts from the app configs.
 
 The integrated calculator is a native React page using the shared profile item and substat components. The recovery and scan engine runs in a dedicated worker. The large level solver loads only for the experimental level method. The standalone offline page remains available for license notices and offline use. Input storage stays in the browser and downloaded exports stay local.
 
